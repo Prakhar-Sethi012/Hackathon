@@ -12,7 +12,7 @@ from entities import Player, Obstacle, PowerUp, ClassroomDoor, Professor
 from ui_elements import Timer, HitBar, ProgressBar, Notification, draw_text
 
 # ─── Constants ────────────────────────────────────────────────────────────────
-SCREEN_W, SCREEN_H = 1200, 600
+SCREEN_W, SCREEN_H = 1300, 700
 FPS = 60
 TITLE = "VIT Sprint"
 
@@ -420,7 +420,7 @@ def play_game(screen, clock, assets):
                     flicker_t = 0
                 elif pu.kind == "panic":
                     panic_active = True
-                    panic_timer = 5.0
+                    panic_timer = 3.0
                 powerups.remove(pu)
 
         # ── Update professor ──────────────────────────────────────────────────
