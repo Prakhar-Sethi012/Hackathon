@@ -12,7 +12,7 @@ from entities import Player, Obstacle, PowerUp, ClassroomDoor, Professor
 from ui_elements import Timer, HitBar, ProgressBar, Notification, draw_text
 
 # ─── Constants ────────────────────────────────────────────────────────────────
-SCREEN_W, SCREEN_H = 1300, 700
+SCREEN_W, SCREEN_H = 1100, 600
 FPS = 60
 TITLE = "VIT Sprint"
 
@@ -73,6 +73,13 @@ def generate_assets():
     # ── Background: load background.png and tile into a wide surface ──────────
     assets["backgrounds"] = [load_background() for _ in range(3)]
 
+    # ── Start screen image (static, shown before game begins) ────────────────
+    try:
+        start_img = pygame.image.load("start.png").convert()
+        assets["start_img"] = pygame.transform.scale(start_img, (SCREEN_W, SCREEN_H))
+    except Exception:
+        assets["start_img"] = assets["backgrounds"][0]  # fallback if missing
+
     # ── Fonts ─────────────────────────────────────────────────────────────────
     assets["font_lg"]  = pygame.font.SysFont("monospace", 48, bold=True)
     assets["font_md"]  = pygame.font.SysFont("monospace", 28, bold=True)
@@ -80,11 +87,11 @@ def generate_assets():
     assets["font_xl"]  = pygame.font.SysFont("monospace", 72, bold=True)
 
     # ── Obstacle / sprite images ───────────────────────────────────────────────
-    assets["img_shuttle"] = load_sprite("shuttle.png",   (160, 80))
+    assets["img_shuttle"] = load_sprite("shuttle.png",   (150, 70))
     assets["img_warden"]  = load_sprite("warden.png",    (70,  110))
     assets["img_red_tag"] = load_sprite("red_tag.png",   (55,  70))
     assets["img_player1"] = load_sprite("player 1.png",  (60,  100))
-    assets["img_player2"] = load_sprite("player2.png",   (60,  100))
+    assets["img_player2"] = load_sprite("player2.png",   (85,  90))
 
     # ── Sounds (synthesised beeps) ─────────────────────────────────────────
     assets["snd_jump"]  = make_beep(880, 80)
@@ -171,7 +178,6 @@ def play_sound(assets, key):
 # Menu Screen
 # ══════════════════════════════════════════════════════════════════════════════
 def menu_screen(screen, clock, assets):
-    bg = assets["backgrounds"][0]
     anim = 0
 
     while True:
@@ -187,9 +193,8 @@ def menu_screen(screen, clock, assets):
                 if event.key == pygame.K_ESCAPE:
                     return "quit"
 
-        # Draw scrolling bg
-        scroll = int(anim * 60) % SCREEN_W
-        screen.blit(bg, (-scroll, 0))
+        # Draw static start screen image
+        screen.blit(assets["start_img"], (0, 0))
 
         # Dark overlay
         overlay = pygame.Surface((SCREEN_W, SCREEN_H), pygame.SRCALPHA)
@@ -262,6 +267,7 @@ def play_game(screen, clock, assets):
     door_spawned     = False
     victory          = False
     obs_history      = []   # tracks last 2 spawned obstacle types for no-repeat rule
+    next_obs_gap     = random.randint(40, 240)  # first gap (px) after player width
 
     GROUND_Y = SCREEN_H - 80 - 64   # player feet y
 
@@ -354,13 +360,21 @@ def play_game(screen, clock, assets):
         # ── Player physics ────────────────────────────────────────────────────
         player.update(dt, GROUND_Y)
 
-        # ── Obstacle spawning (max 2 consecutive same type) ───────────────────
-        obs_spawn_timer -= dt
-        if obs_spawn_timer <= 0:
-            gap = random.uniform(0.8, 1.8) / (game_speed / BASE_SPEED)
-            obs_spawn_timer = gap
+        # ── Obstacle spawning ─────────────────────────────────────────────────
+        # Each gap is chosen once at spawn time: player_width (40px) + random 40–240px.
+        # A new obstacle only appears once the previous one has scrolled far enough
+        # to leave exactly that pre-chosen gap.
+        PLAYER_W = 40
+        if obstacles:
+            rightmost_x = max(obs.draw_rect.right for obs in obstacles)
+        else:
+            rightmost_x = 0
+
+        required_clear = SCREEN_W + 40 - (PLAYER_W + next_obs_gap)
+        can_spawn = (not obstacles) or (rightmost_x <= required_clear)
+
+        if can_spawn and obs_spawn_timer <= 0:
             all_types = ["shuttle", "warden", "red_tag", "player1", "player2"]
-            # If the last 2 were the same type, exclude it
             if len(obs_history) >= 2 and obs_history[-1] == obs_history[-2]:
                 choices = [t for t in all_types if t != obs_history[-1]]
             else:
@@ -370,6 +384,11 @@ def play_game(screen, clock, assets):
             if len(obs_history) > 2:
                 obs_history.pop(0)
             obstacles.append(Obstacle(SCREEN_W + 40, SCREEN_H - 80 - 30, obs_type, assets))
+            # Roll the NEXT gap now so every interval is independently random
+            next_obs_gap = random.randint(80,340)
+            obs_spawn_timer = 0.1   # tiny cooldown to avoid double-spawn in one frame
+        else:
+            obs_spawn_timer -= dt
 
         # ── Power-up spawning ─────────────────────────────────────────────────
         pu_spawn_timer -= dt
@@ -420,7 +439,7 @@ def play_game(screen, clock, assets):
                     flicker_t = 0
                 elif pu.kind == "panic":
                     panic_active = True
-                    panic_timer = 3.0
+                    panic_timer = 5.0
                 powerups.remove(pu)
 
         # ── Update professor ──────────────────────────────────────────────────
@@ -537,7 +556,7 @@ def result_screen(screen, clock, assets, data):
 
     if victory:
         headline = "Attendance: 100%"
-        sub      = "Now You Can Build Crazy Things That Matter!"
+        sub      = "You made it to class!"
         colour   = GREEN
     else:
         headline = "DEBARRED."
