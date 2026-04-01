@@ -87,10 +87,10 @@ def generate_assets():
     assets["font_xl"]  = pygame.font.SysFont("monospace", 72, bold=True)
 
     # ── Obstacle / sprite images ───────────────────────────────────────────────
-    assets["img_shuttle"] = load_sprite("shuttle.png",   (150, 70))
-    assets["img_warden"]  = load_sprite("warden.png",    (70,  110))
-    assets["img_red_tag"] = load_sprite("red_tag.png",   (55,  70))
-    assets["img_player1"] = load_sprite("player 1.png",  (60,  100))
+    assets["img_shuttle"] = load_sprite("shuttle.png",   (85,  90))
+    assets["img_warden"]  = load_sprite("warden.png",    (85,  90))
+    assets["img_red_tag"] = load_sprite("red_tag.png",   (85,  90))
+    assets["img_player1"] = load_sprite("player 1.png",  (85,  90))
     assets["img_player2"] = load_sprite("player2.png",   (85,  90))
 
     # ── Sounds (synthesised beeps) ─────────────────────────────────────────
