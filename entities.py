@@ -104,18 +104,22 @@ OBSTACLE_SIZES = {
     "red_tag": (85, 90),
     "player1": (85, 90),
     "player2": (85, 90),
-    "player3": (85, 90)
+    "player3": (85, 90),
+    "player4": (85, 90),
+    "player5": (85, 90)
 }
 
 # Hitbox offsets relative to the draw rect: (x_offset, y_offset, width, height)
 OBSTACLE_HITBOX = {
     #            x_off  y_off   w    h
-    "shuttle": (  45,   20,    90,  50),  # skip empty left space; van body only
-    "warden":  (  10,   10,    50,  90),  # trim sides a little
-    "red_tag": (   8,    8,    39,  54),  # tight box around the tag
+    "shuttle": (  10,    8,    40,  88),  # skip empty left space; van body only
+    "warden":  (  10,    8,    40,  88),  # trim sides a little
+    "red_tag": (  10,    8,    40,  88),  # tight box around the tag
     "player1": (  10,    8,    40,  88),  # slim vertical hitbox
     "player2": (  10,    8,    40,  88),  # slim vertical hitbox
     "player3": (  10,    8,    40,  88),  # slim vertical hitbox
+    "player4": (  10,    8,    40,  88),  # slim vertical hitbox
+    "player5": (  10,    8,    40,  88),  # slim vertical hitbox
     
 }
 

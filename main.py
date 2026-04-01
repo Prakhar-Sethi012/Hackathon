@@ -3,7 +3,6 @@ VIT Sprint - Main Game Loop & State Manager
 Run: python main.py
 Requires: pip install pygame
 """
-
 import pygame
 import sys
 import random
@@ -92,7 +91,9 @@ def generate_assets():
     assets["img_red_tag"] = load_sprite("red_tag.png",   (85,  90))
     assets["img_player1"] = load_sprite("player1.png",  (85,  90))
     assets["img_player2"] = load_sprite("player2.png",   (85,  90))
-    assets["img_player3"] = load_sprite("player3.png", (85, 90)) 
+    assets["img_player3"] = load_sprite("player3.png", (85, 90))
+    assets["img_player4"] = load_sprite("player4.png", (85, 90))
+    assets["img_player5"] = load_sprite("player5.png", (85, 90)) 
     # ── Sounds (synthesised beeps) ─────────────────────────────────────────
     assets["snd_jump"]  = make_beep(880, 80)
     assets["snd_hit"]   = make_beep(200, 180)
@@ -374,7 +375,7 @@ def play_game(screen, clock, assets):
         can_spawn = (not obstacles) or (rightmost_x <= required_clear)
 
         if can_spawn and obs_spawn_timer <= 0:
-            all_types = ["shuttle", "warden", "red_tag", "player1", "player2","player3"]
+            all_types = ["shuttle", "warden", "red_tag", "player1", "player2","player3","player4","player5"]
             if len(obs_history) >= 2 and obs_history[-1] == obs_history[-2]:
                 choices = [t for t in all_types if t != obs_history[-1]]
             else:
@@ -420,6 +421,8 @@ def play_game(screen, clock, assets):
                     "player1":  "-3s  Bumped into a classmate!",
                     "player2":  "-3s  Tripped over someone!",
                     "player3":  "-3s  Tripped over player!",
+                    "player4":  "-3s  Tripped over player4!",
+                    "player5":  "-3s  Tripped over player5!"
                     
                 }.get(obs.kind, "-3s  Ouch!")
                 add_notif(msg, RED)
