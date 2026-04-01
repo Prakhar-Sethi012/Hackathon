@@ -275,6 +275,13 @@ def play_game(screen, clock, assets):
     def add_notif(text, color=WHITE):
         notifs.append(Notification(text, color, SCREEN_W // 2, 100))
 
+    HEIGHT_LEVELS = [
+            SCREEN_H - 80 - 30,   # low (ground)
+            SCREEN_H - 80 - 75,   # medium
+            SCREEN_H - 80 - 110    # high (jump required)
+            ]
+            
+
     # ── Main loop ─────────────────────────────────────────────────────────────
     running = True
     while running:
@@ -385,12 +392,6 @@ def play_game(screen, clock, assets):
             if len(obs_history) > 2:
                 obs_history.pop(0)
             
-            
-            HEIGHT_LEVELS = [
-            SCREEN_H - 80 - 30,   # low (ground)
-            SCREEN_H - 80 - 75,   # medium
-            SCREEN_H - 80 - 110    # high (jump required)
-            ]
             
             y = random.choice(HEIGHT_LEVELS)
             obstacles.append(Obstacle(SCREEN_W + 40, y, obs_type, assets))
