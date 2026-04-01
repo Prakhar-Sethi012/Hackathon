@@ -92,7 +92,7 @@ def generate_assets():
     assets["img_red_tag"] = load_sprite("red_tag.png",   (85,  90))
     assets["img_player1"] = load_sprite("player1.png",  (85,  90))
     assets["img_player2"] = load_sprite("player2.png",   (85,  90))
-
+    assets["img_player3"] = load_sprite("player3.png", (85, 90)) 
     # ── Sounds (synthesised beeps) ─────────────────────────────────────────
     assets["snd_jump"]  = make_beep(880, 80)
     assets["snd_hit"]   = make_beep(200, 180)
@@ -374,7 +374,7 @@ def play_game(screen, clock, assets):
         can_spawn = (not obstacles) or (rightmost_x <= required_clear)
 
         if can_spawn and obs_spawn_timer <= 0:
-            all_types = ["shuttle", "warden", "red_tag", "player1", "player2"]
+            all_types = ["shuttle", "warden", "red_tag", "player1", "player2","player3"]
             if len(obs_history) >= 2 and obs_history[-1] == obs_history[-2]:
                 choices = [t for t in all_types if t != obs_history[-1]]
             else:
@@ -419,6 +419,8 @@ def play_game(screen, clock, assets):
                     "red_tag":  "-3s  Red-tagged! Back to hostel!",
                     "player1":  "-3s  Bumped into a classmate!",
                     "player2":  "-3s  Tripped over someone!",
+                    "player3":  "-3s  Tripped over player!",
+                    
                 }.get(obs.kind, "-3s  Ouch!")
                 add_notif(msg, RED)
                 play_sound(assets, "snd_hit")

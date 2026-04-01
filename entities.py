@@ -99,11 +99,12 @@ class Player:
 # ══════════════════════════════════════════════════════════════════════════════
 # Sizes must match what main.py passes to load_sprite
 OBSTACLE_SIZES = {
-    "shuttle": (160, 80),
-    "warden":  (70,  110),
-    "red_tag": (55,  70),
-    "player1": (60,  100),
-    "player2": (60,  100),
+    "shuttle": (85, 90),
+    "warden":  (85, 90),
+    "red_tag": (85, 90),
+    "player1": (85, 90),
+    "player2": (85, 90),
+    "player3": (85, 90)
 }
 
 # Hitbox offsets relative to the draw rect: (x_offset, y_offset, width, height)
@@ -114,6 +115,8 @@ OBSTACLE_HITBOX = {
     "red_tag": (   8,    8,    39,  54),  # tight box around the tag
     "player1": (  10,    8,    40,  88),  # slim vertical hitbox
     "player2": (  10,    8,    40,  88),  # slim vertical hitbox
+    "player3": (  10,    8,    40,  88),  # slim vertical hitbox
+    
 }
 
 class Obstacle:
