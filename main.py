@@ -196,18 +196,18 @@ def menu_screen(screen, clock, assets):
         # Draw static start screen image
         screen.blit(assets["start_img"], (0, 0))
 
-        # Dark overlay
+        # Dark overlay ((removed right now))
         overlay = pygame.Surface((SCREEN_W, SCREEN_H), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 140))
-        screen.blit(overlay, (0, 0))
-
+        overlay.fill((0, 0, 0, 40))
+        # screen.blit(overlay, (0, 0))
+        '''
         # Title
         pulse = abs(math.sin(anim * 2)) * 20
         draw_text(screen, "VIT SPRINT", assets["font_xl"],
                   (SCREEN_W // 2, 130 + int(pulse * 0.3)), YELLOW, center=True)
         draw_text(screen, "Can you make it to class?", assets["font_md"],
                   (SCREEN_W // 2, 210), WHITE, center=True)
-
+        
         # Info box
         info = [
             "⏱  Start: 20s  |  Max: 40s",
@@ -223,11 +223,11 @@ def menu_screen(screen, clock, assets):
             col = YELLOW if line == "CONTROLS" else (200, 230, 255)
             draw_text(screen, line, assets["font_sm"], (SCREEN_W // 2, y), col, center=True)
             y += 24
-
+        '''
         # Blink prompt
         if int(anim * 2) % 2 == 0:
-            draw_text(screen, "▶  PRESS SPACE TO RUN  ◀",
-                      assets["font_md"], (SCREEN_W // 2, 450), GREEN, center=True)
+            draw_text(screen, "  PRESS SPACE TO RUN  ",
+                      assets["font_md"], (SCREEN_W // 2.07, 450), GREEN, center=True)
 
         pygame.display.flip()
 
