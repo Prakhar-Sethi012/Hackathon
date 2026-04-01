@@ -384,7 +384,18 @@ def play_game(screen, clock, assets):
             obs_history.append(obs_type)
             if len(obs_history) > 2:
                 obs_history.pop(0)
-            obstacles.append(Obstacle(SCREEN_W + 40, SCREEN_H - 80 - 30, obs_type, assets))
+            
+            
+            HEIGHT_LEVELS = [
+            SCREEN_H - 80 - 30,   # low (ground)
+            SCREEN_H - 80 - 75,   # medium
+            SCREEN_H - 80 - 110    # high (jump required)
+            ]
+            
+            y = random.choice(HEIGHT_LEVELS)
+            obstacles.append(Obstacle(SCREEN_W + 40, y, obs_type, assets))
+            
+            #obstacles.append(Obstacle(SCREEN_W + 40, SCREEN_H - 80 - 30, obs_type, assets))
             # Roll the NEXT gap now so every interval is independently random
             next_obs_gap = random.randint(80,340)
             obs_spawn_timer = 0.1   # tiny cooldown to avoid double-spawn in one frame
