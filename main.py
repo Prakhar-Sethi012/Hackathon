@@ -90,7 +90,7 @@ def generate_assets():
     assets["img_shuttle"] = load_sprite("shuttle.png",   (85,  90))
     assets["img_warden"]  = load_sprite("warden.png",    (85,  90))
     assets["img_red_tag"] = load_sprite("red_tag.png",   (85,  90))
-    assets["img_player1"] = load_sprite("player 1.png",  (85,  90))
+    assets["img_player1"] = load_sprite("player1.png",  (85,  90))
     assets["img_player2"] = load_sprite("player2.png",   (85,  90))
 
     # ── Sounds (synthesised beeps) ─────────────────────────────────────────
