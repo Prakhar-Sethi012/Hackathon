@@ -456,16 +456,16 @@ def play_game(screen, clock, assets):
             if player.is_ducking and obs.rect.y < SCREEN_H-80-80:
                 continue
             if not invincible and player.rect.inflate(-20, -20).colliderect(obs.rect.inflate(-10, -10)):
-                timer.add(-3)
+                timer.add(-2.5)
                 msg = {
-                    "shuttle":  "-3s  Missed the shuttle!",
-                    "warden":   "-3s  Caught by the warden!",
-                    "red_tag":  "-3s  Red-tagged! Back to hostel!",
-                    "player1":  "-3s  Bumped into a classmate!",
-                    "player2":  "-3s  Tripped over someone!",
-                    "player3":  "-3s  Tripped over player!",
-                    "player4":  "-3s  Tripped over player4!",
-                    "player5":  "-3s  Tripped over player5!"
+                    "shuttle":  "-2.5s  Ok Bro ! - Cool Bro ! - Chill bro !",            # aman
+                    "warden":   "-2.5s  Don't underestimate me as a LABUBU fan boy!",    # acharya
+                    "red_tag":  "-2.5s  Ae daaa ! - Where are you looking ?  :| ",       # Varshith               
+                    "player1":  "-2.5s  You Hitting me !! That's crazyyyyy ! ",          # shukla
+                    "player2":  "-2.5s  Ghaziabad se hu ! - Bachke rahiyo laadle :)",     # bhavya
+                    "player3":  "-2.5s  Chuck It Bruhhh !",                               #sarah
+                    "player4":  "-2.5s  Behind this smile is a scary Teenu Byju",         # reenu
+                    "player5":  "-2.5s  Oh Boss ! - Zara Sambhal Ke !"                    # rujin
                     
                 }.get(obs.kind, "-3s  Ouch!")
                 add_notif(msg, RED)
