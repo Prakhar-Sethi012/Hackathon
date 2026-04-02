@@ -9,6 +9,7 @@ import random
 import math
 from entities import Player, Obstacle, PowerUp, ClassroomDoor, Professor
 from ui_elements import Timer, HitBar, ProgressBar, Notification, draw_text
+import os
 
 # ─── Constants ────────────────────────────────────────────────────────────────
 SCREEN_W, SCREEN_H = 1100, 600
@@ -33,6 +34,13 @@ STAGE_DURATION  = 35     # seconds of background scroll
 
 # Background label sequence (visual only – generated art)
 BG_LABELS = ["Main Gate", "Gazebo", "SJT Block"]
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
 def main():
@@ -74,7 +82,8 @@ def generate_assets():
 
     # ── Start screen image (static, shown before game begins) ────────────────
     try:
-        start_img = pygame.image.load("start.png").convert()
+        start_img = pygame.image.load(resource_path("start.png")).convert()
+        #start_img = pygame.image.load("start.png").convert()
         assets["start_img"] = pygame.transform.scale(start_img, (SCREEN_W, SCREEN_H))
     except Exception:
         assets["start_img"] = assets["backgrounds"][0]  # fallback if missing
@@ -108,7 +117,8 @@ def generate_assets():
 def load_background():
     """Load background.png, scale to screen height, tile into a wide surface."""
     try:
-        img = pygame.image.load("background.png").convert()
+        img = pygame.image.load(resource_path("background.png")).convert()
+        #img = pygame.image.load("background.png").convert()
     except Exception:
         img = pygame.Surface((SCREEN_W, SCREEN_H))
         img.fill((100, 160, 220))
@@ -129,7 +139,8 @@ def load_background():
 def load_sprite(filename, size):
     """Load a PNG with transparency, strip black background, scale to size."""
     try:
-        img = pygame.image.load(filename).convert_alpha()
+        img = pygame.image.load(resource_path(filename)).convert_alpha()
+        #img = pygame.image.load(filename).convert_alpha()
         _remove_black_bg(img)
         img = pygame.transform.scale(img, size)
         return img
