@@ -26,10 +26,10 @@ DARK_GREY  = (30, 30, 40)
 SEMI_BLACK = (0, 0, 0, 160)
 
 # Game tuning
-START_TIME      = 25.0   # seconds
+START_TIME      = 30.0   # seconds
 MAX_TIME        = 40.0
 BASE_SPEED      = 4.0
-SPEED_INCREMENT = 0.7    # added every 5 s
+SPEED_INCREMENT = 0.8    # added every 5 s
 STAGE_DURATION  = 40     # seconds of background scroll
 
 # Background label sequence (visual only – generated art)
@@ -433,7 +433,7 @@ def play_game(screen, clock, assets):
         # ── Power-up spawning ─────────────────────────────────────────────────
         pu_spawn_timer -= dt
         if pu_spawn_timer <= 0:
-            pu_spawn_timer = random.uniform(7, 34)
+            pu_spawn_timer = random.uniform(7, 20)
             pu_type = random.choice(["od", "od", "invincible", "panic"])
             powerups.append(PowerUp(SCREEN_W + 40, SCREEN_H - 80 - 55, pu_type))
 

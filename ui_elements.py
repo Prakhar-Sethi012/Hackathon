@@ -59,7 +59,7 @@ class Timer:
 
         # Box background
         bx, by = 10, 10
-        bw, bh = 180, 54
+        bw, bh = 190, 69
 
         # Shake effect
         ox = oy = 0
