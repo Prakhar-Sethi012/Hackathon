@@ -26,14 +26,14 @@ DARK_GREY  = (30, 30, 40)
 SEMI_BLACK = (0, 0, 0, 160)
 
 # Game tuning
-START_TIME      = 20.0   # seconds
+START_TIME      = 25.0   # seconds
 MAX_TIME        = 40.0
 BASE_SPEED      = 4.0
 SPEED_INCREMENT = 0.7    # added every 5 s
 STAGE_DURATION  = 40     # seconds of background scroll
 
 # Background label sequence (visual only – generated art)
-BG_LABELS = ["Main Gate", "Gazebo", "SJT Block"]
+BG_LABELS = ["Main Gate", "Foodys", "SJT Block"]
 
 def resource_path(relative_path):
     try:
