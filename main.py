@@ -29,8 +29,8 @@ SEMI_BLACK = (0, 0, 0, 160)
 START_TIME      = 20.0   # seconds
 MAX_TIME        = 40.0
 BASE_SPEED      = 4.0
-SPEED_INCREMENT = 0.5    # added every 5 s
-STAGE_DURATION  = 35     # seconds of background scroll
+SPEED_INCREMENT = 0.7    # added every 5 s
+STAGE_DURATION  = 40     # seconds of background scroll
 
 # Background label sequence (visual only – generated art)
 BG_LABELS = ["Main Gate", "Gazebo", "SJT Block"]
@@ -268,7 +268,7 @@ def play_game(screen, clock, assets):
     obs_spawn_timer  = 0.0
     pu_spawn_timer   = 0.0
     prof_timer       = 0.0          # next professor appearance
-    next_prof_at     = random.uniform(8, 14)
+    next_prof_at     = random.uniform(8, 30)
     freeze_timer     = 0.0          # screen freeze after lecture
     invincible       = False
     invincible_timer = 0.0
@@ -279,7 +279,7 @@ def play_game(screen, clock, assets):
     door_spawned     = False
     victory          = False
     obs_history      = []   # tracks last 2 spawned obstacle types for no-repeat rule
-    next_obs_gap     = random.randint(40, 240)  # first gap (px) after player width
+    next_obs_gap     = random.randint(35, 240)  # first gap (px) after player width
 
     GROUND_Y = SCREEN_H - 80 - 64   # player feet y
 
@@ -346,7 +346,7 @@ def play_game(screen, clock, assets):
             game_speed = min(game_speed + SPEED_INCREMENT, BASE_SPEED * 2.5)
 
         # Effective scroll speed (panic slows world, not timer)
-        effective_speed = game_speed * (0.6 if panic_active else 1.0) * 60
+        effective_speed = game_speed * (0.8 if panic_active else 1.0) * 60
 
         # ── Background scroll ─────────────────────────────────────────────────
         bg_scroll += effective_speed * dt
@@ -419,7 +419,7 @@ def play_game(screen, clock, assets):
         # ── Power-up spawning ─────────────────────────────────────────────────
         pu_spawn_timer -= dt
         if pu_spawn_timer <= 0:
-            pu_spawn_timer = random.uniform(7, 14)
+            pu_spawn_timer = random.uniform(7, 34)
             pu_type = random.choice(["od", "od", "invincible", "panic"])
             powerups.append(PowerUp(SCREEN_W + 40, SCREEN_H - 80 - 55, pu_type))
 
@@ -429,7 +429,7 @@ def play_game(screen, clock, assets):
             professor = Professor(SCREEN_W - 60, SCREEN_H - 80 - 80)
             hit_bar.show(game_speed)
             prof_timer = 0
-            next_prof_at = random.uniform(10, 18)
+            next_prof_at = random.uniform(10, 28)
 
         # ── Update obstacles ──────────────────────────────────────────────────
         for obs in obstacles[:]:
@@ -486,7 +486,7 @@ def play_game(screen, clock, assets):
 
         # ── Spawn classroom door at ~30 s ─────────────────────────────────────
         if elapsed >= 30 and not door_spawned:
-            door = ClassroomDoor(SCREEN_W + 40, SCREEN_H - 80 - 96)
+            door = ClassroomDoor(SCREEN_W + 50, SCREEN_H - 80 - 86)
             door_spawned = True
 
         if door:
@@ -585,12 +585,12 @@ def result_screen(screen, clock, assets, data):
     anim       = 0
 
     if victory:
-        headline = "Attendance: 100%"
-        sub      = "You made it to class!"
+        headline = "You Made It To GDG"
+        sub      = "Lets Do Crazy Things That Matter!"
         colour   = GREEN
     else:
-        headline = "DEBARRED."
-        sub      = "See you in the Summer Semester."
+        headline = "REJECTED !"
+        sub      = "See you in the Next Semester."
         colour   = RED
 
     while True:
