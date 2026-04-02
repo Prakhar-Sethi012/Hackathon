@@ -103,6 +103,8 @@ def generate_assets():
     assets["img_player3"] = load_sprite("player3.png", (85, 90))
     assets["img_player4"] = load_sprite("player4.png", (85, 90))
     assets["img_player5"] = load_sprite("player5.png", (85, 90)) 
+    assets["img_player6"] = load_sprite("player6.png", (85, 90)) 
+    assets["img_player7"] = load_sprite("player7.png", (85, 90)) 
     # ── Sounds (synthesised beeps) ─────────────────────────────────────────
     assets["snd_jump"]  = make_beep(880, 80)
     assets["snd_hit"]   = make_beep(200, 180)
@@ -405,7 +407,7 @@ def play_game(screen, clock, assets):
         can_spawn = (not obstacles) or (rightmost_x <= required_clear)
 
         if can_spawn and obs_spawn_timer <= 0:
-            all_types = ["shuttle", "warden", "red_tag", "player1", "player2","player3","player4","player5"]
+            all_types = ["shuttle", "warden", "red_tag", "player1", "player2","player3","player4","player5","player6","player7"]
             if len(obs_history) >= 2 and obs_history[-1] == obs_history[-2]:
                 choices = [t for t in all_types if t != obs_history[-1]]
             else:
@@ -458,17 +460,19 @@ def play_game(screen, clock, assets):
             if not invincible and player.rect.inflate(-20, -20).colliderect(obs.rect.inflate(-10, -10)):
                 timer.add(-2.5)
                 msg = {
-                    "shuttle":  "-2.5s  Ok Bro ! - Cool Bro ! - Chill bro !",            # aman
-                    "warden":   "-2.5s  Don't underestimate me as a LABUBU fan boy!",    # acharya
-                    "red_tag":  "-2.5s  Ae daaa ! - Where are you looking ?  :| ",       # Varshith               
-                    "player1":  "-2.5s  You Hitting me !! That's crazyyyyy ! ",          # shukla
+                    "shuttle":  "-2.5s  Ok Bro ! - Cool Bro ! - Chill bro !",             # aman
+                    "warden":   "-2.5s  Don't underestimate me as a LABUBU fan boy!",     # acharya
+                    "red_tag":  "-2.5s  Ae daaa ! - Where are you looking ?  :| ",        # Varshith               
+                    "player1":  "-2.5s  You Hitting me !! That's crazyyyyy ! ",           # shukla
                     "player2":  "-2.5s  Ghaziabad se hu ! - Bachke rahiyo laadle :)",     # bhavya
-                    "player3":  "-2.5s  Chuck It Bruhhh !",                               #sarah
+                    "player3":  "-2.5s  Chuck It Bruhhh !",                               # sarah
                     "player4":  "-2.5s  Behind this smile is a scary Teenu Byju",         # reenu
-                    "player5":  "-2.5s  Oh Boss ! - Zara Sambhal Ke !"                    # rujin
+                    "player5":  "-2.5s  Oh Boss ! - Zara Sambhal Ke !"        ,           # rujin
+                    "player6":  "-2.5s  Oyeeee Lalllluuuuu !!"         ,                  # radhika
+                    "player7":  "-2.5s  No problem BUDDY, Be Careful :))"                 # Nitin 
                     
                 }.get(obs.kind, "-3s  Ouch!")
-                add_notif(msg, RED)
+                add_notif(msg, RED) 
                 play_sound(assets, "snd_hit")
                 obstacles.remove(obs)
 

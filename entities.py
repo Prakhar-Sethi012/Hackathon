@@ -135,7 +135,9 @@ OBSTACLE_SIZES = {
     "player2": (85, 90),
     "player3": (85, 90),
     "player4": (85, 90),
-    "player5": (85, 90)
+    "player5": (85, 90),
+    "player6": (85, 90),
+    "player7": (85, 90)
 }
 
 # Hitbox offsets relative to the draw rect: (x_offset, y_offset, width, height)
@@ -149,7 +151,8 @@ OBSTACLE_HITBOX = {
     "player3": (  10,    8,    40,  88),  # slim vertical hitbox
     "player4": (  10,    8,    40,  88),  # slim vertical hitbox
     "player5": (  10,    8,    40,  88),  # slim vertical hitbox
-    
+    "player6": (  10,    8,    40,  88),  # slim vertical hitbox
+    "player7": (  10,    8,    40,  88),  # slim vertical hitbox
 }
 
 class Obstacle:
