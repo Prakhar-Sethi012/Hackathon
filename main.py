@@ -28,7 +28,7 @@ SEMI_BLACK = (0, 0, 0, 160)
 # Game tuning
 START_TIME      = 30.0   # seconds
 MAX_TIME        = 40.0
-BASE_SPEED      = 4.0
+BASE_SPEED      = 6.0
 SPEED_INCREMENT = 0.8    # added every 5 s
 STAGE_DURATION  = 40     # seconds of background scroll
 
