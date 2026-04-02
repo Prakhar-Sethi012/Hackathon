@@ -303,14 +303,26 @@ def play_game(screen, clock, assets):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "quit", {}
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return "menu", {}
+
                 # Jump
                 if event.key in (pygame.K_SPACE, pygame.K_UP):
                     if player.on_ground:
                         player.jump()
                         play_sound(assets, "snd_jump")
+
+                # Duck start
+                if event.key == pygame.K_DOWN:
+                    player.duck()
+
+            # ✅ OUTSIDE KEYDOWN
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    player.stand()
+
                 # Professor interaction
                 if event.key in (pygame.K_e, pygame.K_RETURN):
                     if professor and professor.active and hit_bar.visible:
@@ -436,6 +448,12 @@ def play_game(screen, clock, assets):
             obs.update(effective_speed * dt)
             if obs.rect.right < 0:
                 obstacles.remove(obs)
+                continue
+            is_high=obs.rect.bottom < (GROUND_Y-10)
+            if player.is_ducking and is_high:
+                continue
+
+            if player.is_ducking and obs.rect.y < SCREEN_H-80-80:
                 continue
             if not invincible and player.rect.inflate(-20, -20).colliderect(obs.rect.inflate(-10, -10)):
                 timer.add(-3)

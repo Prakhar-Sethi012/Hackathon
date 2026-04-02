@@ -37,9 +37,25 @@ class Player:
         self.on_ground = True
         self.anim_t    = 0.0   # walk cycle
         self.rect      = pygame.Rect(int(self.x), int(self.y), self.W, self.H)
+        self.is_ducking = False
+        self.normal_height = self.rect.height
+        self.duck_height = self.rect.height // 2
+
+    def duck(self):
+        if self.on_ground and not self.is_ducking:
+            self.is_ducking = True
+            self.rect.y += (self.normal_height - self.duck_height)
+            self.rect.height = self.duck_height
+
+    def stand(self):
+        if self.is_ducking:
+            self.rect.y -= (self.normal_height - self.duck_height)
+            self.rect.height = self.normal_height
+            self.is_ducking = False
+
 
     def jump(self):
-        if self.on_ground:
+        if self.on_ground and not self.is_ducking:
             self.vy = self.JUMP_VEL
             self.on_ground = False
 
@@ -53,46 +69,59 @@ class Player:
             self.on_ground = True
         else:
             self.on_ground = False
-        self.rect.topleft = (int(self.x), int(self.y))
+
+        self.rect.x = int(self.x)
+
+        if not self.is_ducking:
+            self.rect.y = int(self.y)
 
     def draw(self, screen, invincible=False):
         x, y = int(self.x), int(self.y)
-        t    = self.anim_t
+        t = self.anim_t
+
+        # ─── DUCK OFFSET ───
+        # If ducking, we shift the drawing down so the head lowers 
+        # but the feet stay on the ground.
+        draw_y = y + 25 if self.is_ducking else y
 
         # ── Body (white shirt, dark pants) ───────────────────────────────────
         # Pants
-        leg_swing = math.sin(t) * 8 if self.on_ground else 0
-        pygame.draw.rect(screen, DARK, (x + 8,  y + 36, 12, 28))   # left leg
-        pygame.draw.rect(screen, DARK, (x + 20, y + 36, 12, 28))   # right leg
+        leg_swing = math.sin(t) * 8 if (self.on_ground and not self.is_ducking) else 0
+        pygame.draw.rect(screen, DARK, (x + 8,  draw_y + 36, 12, 28))   # left leg
+        pygame.draw.rect(screen, DARK, (x + 20, draw_y + 36, 12, 28))   # right leg
+        
         # Shoe
-        pygame.draw.rect(screen, BLACK, (x + 6 + int(leg_swing),  y + 60, 14, 6))
-        pygame.draw.rect(screen, BLACK, (x + 18 - int(leg_swing), y + 60, 14, 6))
+        pygame.draw.rect(screen, BLACK, (x + 6 + int(leg_swing),  draw_y + 60, 14, 6))
+        pygame.draw.rect(screen, BLACK, (x + 18 - int(leg_swing), draw_y + 60, 14, 6))
 
         # Shirt
         shirt_col = (100, 150, 255) if not invincible else YELLOW
-        pygame.draw.rect(screen, shirt_col, (x + 5, y + 16, 30, 24))
-        # Backpack
-        pygame.draw.rect(screen, BROWN, (x + 30, y + 18, 10, 18))
+        # Squash the shirt height if ducking
+        shirt_h = 15 if self.is_ducking else 24
+        pygame.draw.rect(screen, shirt_col, (x + 5, draw_y + 16, 30, shirt_h))
+        
+        # Backpack (Hide or move backpack if ducking)
+        if not self.is_ducking:
+            pygame.draw.rect(screen, BROWN, (x + 30, draw_y + 18, 10, 18))
 
-        # Arms
-        arm_swing = math.sin(t + math.pi) * 10 if self.on_ground else 0
-        pygame.draw.line(screen, SKIN, (x + 8, y + 20),  (x + 2,  y + 32 + int(arm_swing)), 4)
-        pygame.draw.line(screen, SKIN, (x + 32, y + 20), (x + 38, y + 32 - int(arm_swing)), 4)
+        # Arms (Keep them static if ducking)
+        arm_swing = math.sin(t + math.pi) * 10 if (self.on_ground and not self.is_ducking) else 0
+        pygame.draw.line(screen, SKIN, (x + 8, draw_y + 20),  (x + 2,  draw_y + 32 + int(arm_swing)), 4)
+        pygame.draw.line(screen, SKIN, (x + 32, draw_y + 20), (x + 38, draw_y + 32 - int(arm_swing)), 4)
 
         # Head
-        pygame.draw.circle(screen, SKIN,  (x + 20, y + 12), 13)
+        pygame.draw.circle(screen, SKIN, (x + 20, draw_y + 12), 13)
         # Hair
-        pygame.draw.arc(screen, DARK, (x + 7, y + 1, 26, 18),
-                        0, math.pi, 5)
+        pygame.draw.arc(screen, DARK, (x + 7, draw_y + 1, 26, 18), 0, math.pi, 5)
         # Eyes
-        pygame.draw.circle(screen, BLACK, (x + 15, y + 11), 2)
-        pygame.draw.circle(screen, BLACK, (x + 25, y + 11), 2)
-        # Mouth (smile or grimace)
+        pygame.draw.circle(screen, BLACK, (x + 15, draw_y + 11), 2)
+        pygame.draw.circle(screen, BLACK, (x + 25, draw_y + 11), 2)
+        
+        # Mouth
         if self.on_ground:
-            pygame.draw.arc(screen, BLACK, (x + 14, y + 14, 12, 6), math.pi, 2 * math.pi, 2)
+            pygame.draw.arc(screen, BLACK, (x + 14, draw_y + 14, 12, 6), math.pi, 2 * math.pi, 2)
         else:
-            pygame.draw.arc(screen, BLACK, (x + 14, y + 14, 12, 6), 0, math.pi, 2)
-
+            pygame.draw.arc(screen, BLACK, (x + 14, draw_y + 14, 12, 6), 0, math.pi, 2)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # Obstacle  (image-based: shuttle, warden, red_tag)
